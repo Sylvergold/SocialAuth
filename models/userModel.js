@@ -1,22 +1,28 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-    fullName:{
+    fullName: {
         type: String,
-        required: [true,'fullName is required.']
+        required: [true, 'fullName is required.']
     },
-    email:{
+    email: {
         type: String,
-        required:[true,'Email is required.'],
-        
+        required: [true, 'Email is required.'],
+        unique: true
     },
-    password:{
+    password: {
         type: String,
-        required:[true,'password is required.']
+        required: false // Set to false to make it optional
     }
-}, {timestamps: true});
+}, { timestamps: true });
+userSchema.set('toJSON', {
+    transform: (doc, ret) => {
+      delete ret.__v;
+      return ret;
+    }
+  });
+
 
 const userModel = mongoose.model("User",userSchema);
-
 
 module.exports = userModel;
